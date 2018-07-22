@@ -9,64 +9,104 @@ import edu.duke.*;
 import java.io.*;
 
 public class part3 {
-    public int printAllGenes(String dna){
+    public void processGenes(StorageResource sr){
+    
+        for(String longer : sr.data()){
             
-         int startIndex = dna.indexOf("ATG");
-         
-         int stopIndex = dna.indexOf("TAA",startIndex+3 );
-         
-         
-         
-         int count = 0;
-         while(true){
-             
-             
-             if((stopIndex+3 - startIndex) % 3  == 0)
-             {
-                 count = count +1;
-             
-             
-            }
-             startIndex =dna.indexOf("ATG", stopIndex +3 );
-             stopIndex = dna.indexOf("TAA",startIndex+3 );
-             
-             if(stopIndex == -1)return 0;
+            if(longer.length() > 9)
+            System.out.println(longer);
             
-             
-             if(startIndex == -1)break;
-            }
-         
-            return count ; 
         }
-           
-        public int countGenes(String dna)
+        int count = 0;
+         for(String longer : sr.data()){
+            
+            if(longer.length() > 9)
+            count = count+1;
+          
+        }
+        System.out.println(count);
+        
+        for(String ratio : sr.data()){
+            float CGRatio = cgRatio(ratio);
+            
+            if(CGRatio > 0.35)
+            {
+              System.out.println(CGRatio);  
+            }
+        
+            
+            
+            
+        }
+        
+        for(String ratio : sr.data()){
+            float CGRatio = cgRatio(ratio);
+            
+            if(CGRatio > 0.35)
+            {
+              System.out.println(ratio);  
+            }
+        
+            
+            
+            
+        }
+        
+        int maxLength = 0;
+        String longest = null; 
+        for(String longestString : sr.data())
         {
-         int geneNum = printAllGenes(dna);
-         return geneNum;
          
+         if(longestString.length()  >  maxLength)
+         
+         {
+         maxLength = longestString.length();
+         
+         longest = longestString ;
+        }
          
         }
         
-        public void testCountGenes(){
-         String dna = "ATGTAAATGCGTA";
-         int geneCount = countGenes(dna);
-         System.out.println("The DNA is "+dna);
-         System.out.println("The GeneCount = "+geneCount);
-         
-         /*dna = "ATGGTATAAGCTATGCGTTAA";
-          geneCount = countGenes(dna);
-         System.out.println("The DNA is "+dna);
-         System.out.println("The GeneCount = "+geneCount);
-         
-         dna = "ATGGT";
-          geneCount = countGenes(dna);
-         System.out.println("The DNA is "+dna);
-         System.out.println("The GeneCount = "+geneCount);
-         
-         dna = "GTATAA";
-          geneCount = countGenes(dna);
-         System.out.println("The DNA is "+dna);
-         System.out.println("The GeneCount = "+geneCount);*/
-        }
+        System.out.println(longest);
+        
+        
+    }
     
+    
+    public float cgRatio(String dna)
+    {
+     int cIndex = dna.indexOf("C");
+     int gIndex = dna.indexOf("G");
+     float count = 0 ;
+     
+     while(cIndex != -1 ){
+         
+       count = count+1;
+       cIndex = dna.indexOf("C",cIndex+1);
+      
+        }
+         while( gIndex!=-1){
+         
+       count = count+1;
+      
+       gIndex = dna.indexOf("G",gIndex+1);
+        }
+       
+      int dnaSize = dna.length();
+      float cgRatio = count/dnaSize ;
+      return cgRatio;
+      
+    }
+    
+    public void testProcessGenes()
+    {
+        part3 pt = new part3();
+     StorageResource sr = new StorageResource();
+     sr.add("ATGCGATAA");
+     sr.add("ATGCGAATGCGTAAT");
+     
+     pt.processGenes(sr);
+        
+    }
+
 }
